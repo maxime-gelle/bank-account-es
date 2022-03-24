@@ -1,7 +1,9 @@
-package bankaccount
+package statement
 
 import DepositMade
 import WithdrawMade
+import bankaccount.Statement
+import bankaccount.StatementLine
 import org.assertj.core.api.Assertions
 import java.time.LocalDateTime
 import kotlin.test.Test
