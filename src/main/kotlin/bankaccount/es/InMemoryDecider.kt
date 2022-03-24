@@ -3,7 +3,7 @@ package bankaccount.es
 open class InMemoryDecider<Command, Event, State>(
     override val decide: (Command, State) -> List<Event>,
     override val evolve: (State, Event) -> State,
-    override val initialState: State
+    final override val initialState: State
 ) : Decider<Command, Event, State> {
     private var state: State = initialState
 
