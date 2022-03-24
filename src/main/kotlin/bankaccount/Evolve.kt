@@ -4,5 +4,5 @@ import BankAccountEvent
 
 class BankAccountState
 
-fun evolve(events: List<BankAccountEvent>): BankAccountState =
+fun evolve(state: BankAccountState, events: BankAccountEvent): BankAccountState =
     BankAccountState()

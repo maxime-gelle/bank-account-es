@@ -2,13 +2,23 @@ package bankaccount
 
 import BankAccountEvent
 
-class BankAccount {
+class BankAccount : Decider<BankAccountCommand, BankAccountEvent, BankAccountState>(
+    decide = ::decide,
+    evolve = ::evolve,
+    initialState = BankAccountState()
+) {}
 
-    private val pastEvents = emptyList<BankAccountEvent>()
+open class Decider<Command, Event, State>(
+    val decide: (Command, State) -> List<Event>,
+    val evolve: (State, Event) -> State,
+    val initialState: State
+) {
+    private var state: State = initialState
 
-    fun handle(command: BankAccountCommand): List<BankAccountEvent> {
-        val state = evolve(pastEvents)
-        return decide(state, command)
+    fun handle(command: Command): List<Event> {
+        val newEvents = decide(command, state);
+        state = newEvents.fold(state) { state, event -> evolve(state, event) }
+        return newEvents
     }
 
 }
