@@ -1,24 +1,11 @@
 package bankaccount
 
 import BankAccountEvent
+import bankaccount.es.InMemoryDecider
 
-class BankAccount : Decider<BankAccountCommand, BankAccountEvent, BankAccountState>(
+class BankAccount : InMemoryDecider<BankAccountCommand, BankAccountEvent, BankAccountState>(
     decide = ::decide,
     evolve = ::evolve,
-    initialState = BankAccountState()
+    initialState = BankAccountState(balance = 0.0)
 ) {}
 
-open class Decider<Command, Event, State>(
-    val decide: (Command, State) -> List<Event>,
-    val evolve: (State, Event) -> State,
-    val initialState: State
-) {
-    private var state: State = initialState
-
-    fun handle(command: Command): List<Event> {
-        val newEvents = decide(command, state);
-        state = newEvents.fold(state) { state, event -> evolve(state, event) }
-        return newEvents
-    }
-
-}
