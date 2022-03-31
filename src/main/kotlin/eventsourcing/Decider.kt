@@ -1,4 +1,4 @@
-package es
+package eventsourcing
 
 data class Decider<Command, Event, State>(
     val decide: (Command, State) -> List<Event>,

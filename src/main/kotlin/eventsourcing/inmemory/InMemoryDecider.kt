@@ -1,7 +1,7 @@
-package es.inmemory
+package eventsourcing.inmemory
 
-import es.CommandHandler
-import es.Decider
+import eventsourcing.CommandHandler
+import eventsourcing.Decider
 
 open class InMemoryDecider<Command, Event, State>(
     private val decider: Decider<Command, Event, State>

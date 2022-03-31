@@ -3,7 +3,7 @@ package bankaccount
 import DepositMade
 import WithdrawMade
 import WithdrawRefused
-import es.inmemory.InMemoryDecider
+import eventsourcing.inmemory.InMemoryDecider
 import org.assertj.core.api.Assertions
 import java.time.LocalDateTime
 import kotlin.test.Test

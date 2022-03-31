@@ -1,6 +1,6 @@
 package bankaccount
 
-import es.Decider
+import eventsourcing.Decider
 
 val bankAccountDecider = Decider(::decide, ::evolve, initialState)
 
