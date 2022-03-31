@@ -10,6 +10,7 @@ data class BankAccountState(
     val balance: Double
 )
 
+val initialState = BankAccountState(balance = 0.0)
 fun evolve(state: BankAccountState, event: BankAccountEvent): BankAccountState =
     when (event) {
         is DepositMade -> state.copy(balance = state.balance + event.amount)

@@ -1,4 +1,4 @@
-package bankaccount
+package satement
 
 import BankAccountEvent
 import DepositMade

@@ -3,13 +3,14 @@ package bankaccount
 import DepositMade
 import WithdrawMade
 import WithdrawRefused
+import es.inmemory.InMemoryDecider
 import org.assertj.core.api.Assertions
 import java.time.LocalDateTime
 import kotlin.test.Test
 
 class BankAccountTest {
 
-    private val bankAccount = BankAccount()
+    private val bankAccount = InMemoryDecider(bankAccountDecider)
 
     @Test
     fun `should accept deposit`() {
