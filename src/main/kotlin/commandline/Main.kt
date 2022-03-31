@@ -12,13 +12,14 @@ import java.time.LocalDateTime
 
 
 val eventStore = FileEventStore(File("/tmp/eventStore"))
-val statement = Statement()
+val statement = Statement(eventStore)
 val bankAccount = WithEventHandlers(
     EventStoreDecider(bankAccountDecider, eventStore), listOf(statement)
 )
 val statementPrinter = StatementPrinter()
 
 fun main() {
+    statement.replay()
 
     generateSequence { readLine() }
         .forEach { line ->

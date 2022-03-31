@@ -2,6 +2,7 @@ package statement
 
 import DepositMade
 import WithdrawMade
+import commandline.eventStore
 import satement.Statement
 import satement.StatementLine
 import org.assertj.core.api.Assertions
@@ -12,7 +13,7 @@ class StatementTest {
 
     @Test
     fun `should create statement`() {
-        val statement = Statement()
+        val statement = Statement(eventStore)
 
         statement.handle(DepositMade(amount = 1000.0, LocalDateTime.of(2015, 12, 24, 12, 0)))
         statement.handle(WithdrawMade(300.0, LocalDateTime.of(2016, 8, 23, 12, 0)))

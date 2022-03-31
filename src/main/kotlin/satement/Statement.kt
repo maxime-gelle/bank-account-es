@@ -4,11 +4,18 @@ import BankAccountEvent
 import DepositMade
 import WithdrawMade
 import eventsourcing.withEventhandlers.EventHandler
+import eventstore.FileEventStore
 import java.time.LocalDateTime
 
-class Statement: EventHandler<BankAccountEvent> {
+class Statement(private val eventStore: FileEventStore) : EventHandler<BankAccountEvent> {
     var state = listOf<StatementLine>()
     private var balance = 0.0
+
+    fun replay() {
+        state = emptyList()
+        balance = 0.0
+        eventStore.loadEvents().forEach(this::handle)
+    }
 
     override fun handle(event: BankAccountEvent) {
         this.balance = evolveBalance(balance, event)
