@@ -3,6 +3,7 @@ package eventstore
 import BankAccountEvent
 import DepositMade
 import WithdrawMade
+import WithdrawRefused
 import eventsourcing.eventstore.EventStore
 import java.io.File
 import java.time.LocalDateTime
@@ -23,6 +24,7 @@ class FileEventStore(private val file: File): EventStore<BankAccountEvent> {
         return when(operation) {
             DepositMade::class.qualifiedName -> DepositMade(amount = amount.toDouble(), date.deserialize())
             WithdrawMade::class.qualifiedName -> WithdrawMade(amount = amount.toDouble(), date.deserialize())
+            WithdrawRefused::class.qualifiedName -> WithdrawRefused(amount = amount.toDouble(), date.deserialize())
             else -> throw IllegalStateException("Unknown event : $line")
         }
     }
@@ -39,6 +41,7 @@ class FileEventStore(private val file: File): EventStore<BankAccountEvent> {
         when(event) {
             is DepositMade -> "${event::class.qualifiedName}$separator${event.amount}$separator${event.dateTime.serialize()}\n"
             is WithdrawMade -> "${event::class.qualifiedName}$separator${event.amount}$separator${event.dateTime.serialize()}\n"
+            is WithdrawRefused -> "${event::class.qualifiedName}$separator${event.amount}$separator${event.dateTime.serialize()}\n"
             else -> throw IllegalStateException("Unknown event : $event")
         }
 }
