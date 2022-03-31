@@ -3,13 +3,14 @@ package satement
 import BankAccountEvent
 import DepositMade
 import WithdrawMade
+import eventsourcing.withEventhandlers.EventHandler
 import java.time.LocalDateTime
 
-class Statement {
+class Statement: EventHandler<BankAccountEvent> {
     var state = listOf<StatementLine>()
     private var balance = 0.0
 
-    fun evolve(event: BankAccountEvent) {
+    override fun handle(event: BankAccountEvent) {
         this.balance = evolveBalance(balance, event)
         this.state = evolveStatement(state, event)
     }

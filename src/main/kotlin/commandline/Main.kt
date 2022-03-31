@@ -4,6 +4,7 @@ import bankaccount.MakeDeposit
 import bankaccount.MakeWithdraw
 import bankaccount.bankAccountDecider
 import eventsourcing.eventstore.EventStoreDecider
+import eventsourcing.withEventhandlers.WithEventHandlers
 import eventstore.FileEventStore
 import satement.Statement
 import java.io.File
@@ -11,8 +12,10 @@ import java.time.LocalDateTime
 
 
 val eventStore = FileEventStore(File("/tmp/eventStore"))
-val bankAccount = EventStoreDecider(bankAccountDecider, eventStore)
 val statement = Statement()
+val bankAccount = WithEventHandlers(
+    EventStoreDecider(bankAccountDecider, eventStore), listOf(statement)
+)
 val statementPrinter = StatementPrinter()
 
 fun main() {
@@ -30,12 +33,10 @@ fun main() {
 
 fun makeDeposit(line: String) {
     val (_cmd, amount) = line.split(" ")
-    val events = bankAccount.handle(MakeDeposit(amount.toDouble(), LocalDateTime.now()))
-    events.forEach(statement::evolve)
+    bankAccount.handle(MakeDeposit(amount.toDouble(), LocalDateTime.now()))
 }
 
 fun makeWithdraw(line: String) {
     val (_cmd, amount) = line.split(" ")
-    val events = bankAccount.handle(MakeWithdraw(amount.toDouble(), LocalDateTime.now()))
-    events.forEach(statement::evolve)
+    bankAccount.handle(MakeWithdraw(amount.toDouble(), LocalDateTime.now()))
 }

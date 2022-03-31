@@ -14,9 +14,9 @@ class StatementTest {
     fun `should create statement`() {
         val statement = Statement()
 
-        statement.evolve(DepositMade(amount = 1000.0, LocalDateTime.of(2015, 12, 24, 12, 0)))
-        statement.evolve(WithdrawMade(300.0, LocalDateTime.of(2016, 8, 23, 12, 0)))
-        statement.evolve(DepositMade(100.0, LocalDateTime.of(2016, 8, 25, 12, 0)))
+        statement.handle(DepositMade(amount = 1000.0, LocalDateTime.of(2015, 12, 24, 12, 0)))
+        statement.handle(WithdrawMade(300.0, LocalDateTime.of(2016, 8, 23, 12, 0)))
+        statement.handle(DepositMade(100.0, LocalDateTime.of(2016, 8, 25, 12, 0)))
 
         Assertions.assertThat(statement.state).isEqualTo(listOf(
             StatementLine(amount = 1000.0, balance = 1000.0,date = LocalDateTime.of(2015, 12, 24, 12, 0)),
